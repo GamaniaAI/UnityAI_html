@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>Unity MCP 快速開發環境配置</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            display: flex;
+            height: 100vh;
+        }
+        aside {
+            width: 38%;
+            background: #f4f6f8;
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 1px solid #ddd;
+        }
+        main {
+            width: 62%;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        h1, h2, h3 {
+            margin-top: 0;
+        }
+        .section {
+            margin: 14px 0;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        pre {
+            background: #0d1117;
+            color: #c9d1d9;
+            padding: 14px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+        }
+        button {
+            margin-top: 10px;
+            padding: 8px 14px;
+            font-size: 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background: #2563eb;
+            color: #fff;
+        }
+        button:hover {
+            background: #1d4ed8;
+        }
+        .note {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+        }
+        .badge {
+            display: inline-block;
+            background: #e5e7eb;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 12px;
+            margin-right: 6px;
+        }
+
+        .current-feature{
+            padding:10px;
+            margin-bottom:12px;
+            border-radius:6px;
+            background:#eef6ff;
+            font-weight:600;
+        }
+
+        .doc-section{
+            padding:8px;
+            border-radius:6px;
+            margin-bottom:6px;
+        }
+
+        .doc-section.active{
+            background:#fff3cd;
+            border-left:4px solid #ff9800;
+        }
+    </style>
+</head>
+<body>
+    <!-- 文件版 -->
+    <aside class="sidebar">
+    <div class="doc">
+
+    <div id="doc-scene" class="doc-section">
+        <h3>1. 場景管理（Scene Management）</h3>
+        <p>
+        此區展示整個 Unity 場景的基本狀態與管理能力。
+        觀者可看到目前場景的載入狀態、儲存結果，確認場景是否正確建立。
+        </p>
+        <p>
+        成功指標：場景資訊文字正確顯示。
+        </p>
+    </div>
+
+    <div id="doc-gameobject" class="doc-section">
+        <h3>2. GameObject 操作</h3>
+        <p>
+        此區展示 GameObject 的建立、修改、刪除與搜尋能力。
+        透過規則排列的立方體，可以直觀觀察物件是否成功被建立與操作。
+        </p>
+        <p>
+        成功指標：物件出現 / 消失、位置變化、搜尋結果高亮顯示。
+        </p>
+    </div>
+
+    <div id="doc-component" class="doc-section">
+        <h3>3. 組件管理（Component Management）</h3>
+        <p>
+        此區展示對 GameObject 組件的動態管理能力，例如新增或移除 Rigidbody。
+        組件存在與否會直接影響物件行為。
+        </p>
+        <p>
+        成功指標：物件出現下落、停止或行為改變。
+        </p>
+    </div>
+
+    <div id="doc-asset" class="doc-section">
+        <h3>4. 資源與材質管理</h3>
+        <p>
+        此區展示 Unity 資源的搜尋、載入與材質套用能力。
+        透過材質顏色與外觀變化，觀者可以直接確認資源是否正確應用。
+        </p>
+        <p>
+        成功指標：物件外觀在套用材質前後明顯不同。
+        </p>
+    </div>
+
+    <div id="doc-script" class="doc-section">
+        <h3>5. 腳本操作</h3>
+        <p>
+        此區展示腳本的建立、修改、驗證與刪除流程。
+        腳本是否成功編譯，會直接反映在物件的動態行為上。
+        </p>
+        <p>
+        成功指標：物件開始旋轉或運動，刪除腳本後行為停止。
+        </p>
+    </div>
+
+    <div id="doc-vfx" class="doc-section">
+        <h3>6. VFX 與特效系統</h3>
+        <p>
+        此區展示視覺特效（粒子系統）的建立與參數調整能力。
+        粒子效果可以即時開關與修改。
+        </p>
+        <p>
+        成功指標：粒子出現、消失或密度與形態明顯改變。
+        </p>
+    </div>
+
+    <div id="doc-editor" class="doc-section">
+        <h3>7. 編輯器狀態控制</h3>
+        <p>
+        此區展示 Unity 編輯器模式（Edit / Play）的切換控制。
+        中央狀態文字會顯示目前所處的模式。
+        </p>
+        <p>
+        成功指標：狀態文字正確顯示目前模式，動態行為同步變化。
+        </p>
+    </div>
+
+    <div id="doc-batch" class="doc-section">
+        <h3>8. 批量操作</h3>
+        <p>
+        此區展示大量物件同時建立與操作的能力。
+        可觀察批量操作與單一操作在速度與結果上的差異。
+        </p>
+        <p>
+        成功指標：大量物件瞬間產生，排列規則一致。
+        </p>
+    </div>
+
+    <div id="doc-test" class="doc-section">
+        <h3>9. 測試執行（Testing）</h3>
+        <p>
+        此區展示測試流程的啟動與結果回饋。
+        測試狀態與通過 / 失敗結果會以文字形式呈現。
+        </p>
+        <p>
+        成功指標：測試進度與結果清楚顯示。
+        </p>
+    </div>
+
+    <div id="doc-monitor" class="doc-section">
+        <h3>10. 監控與控制台</h3>
+        <p>
+        此區展示 Unity 控制台訊息的即時讀取能力。
+        錯誤與警告會以文字形式顯示，協助快速定位問題。
+        </p>
+        <p>
+        成功指標：錯誤或訊息即時顯示並與操作對應。
+        </p>
+    </div>
+        
+    <div id="doc-prefab"class="doc-section">
+        <h3>11. Prefab 管理</h3>
+        <p>
+            此區展示將場景中的 GameObject 轉換為 Prefab 資產並保存的流程。
+            用來驗證 MCP 是否能正確操作 Unity 的資產化流程。
+        </p>
+        <p>
+            成功指標：Prefab 資產成功出現在指定資料夾中。
+        </p>
+    </div>
+
+    <div id="doc-scriptable"class="doc-section">
+        <h3>12. ScriptableObject 管理</h3>
+        <p>
+            此區展示 ScriptableObject 的建立與參數設定能力。
+            用來驗證 MCP 對純資料資產的操作能力。
+        </p>
+        <p>
+            成功指標：ScriptableObject 成功建立且參數值正確。
+        </p>
+    </div>
+
+    <div id="doc-refresh"class="doc-section">
+        <h3>13. 系統重新整理與狀態讀取</h3>
+        <p>
+            此區展示 Unity 資源重新整理後，編輯器狀態的即時回饋。
+            用來確認 MCP 與 Unity Editor 狀態同步是否正常。
+        </p>
+        <p>
+            成功指標：重新整理完成，狀態文字正確顯示。
+        </p>
+    </div>
+
+    </div>
+
+    </aside>
+    <!-- 實際操作版 -->
+    <main>
+
+    <h2>實際操作 Prompts</h2>
+    <!-- <small>建議模型: Claude Haiku 4.5</small> -->
+    
+    <!-- Prompt 01 -->
+    <div class="section">
+    <h3><span class="badge">01</span>場景管理</h3>
+    <pre id="p01">【操作範圍聲明】
+    本次只示範「場景資訊顯示」，完成後請停止。
+
+    目標：
+    在場景中央建立一個文字物件，顯示目前場景名稱。
+
+    操作要求：
+    - 取得目前場景資訊
+    - 建立文字顯示於中央區域
+    - 不執行其他功能
+    - 完成後停止</pre>
+    <button onclick="copyPrompt('p01')">📋 複製 Prompt</button>
+    </div>
+
+    <!-- Prompt 02 -->
+    <div class="section">
+    <h3><span class="badge">02</span>GameObject 建立</h3>
+    <pre id="p02">【操作範圍聲明】
+    本次只示範 GameObject 建立，完成後請停止。
+
+    【專案配置】
+    - 渲染管線：Universal Render Pipeline (URP)
+    - Shader 類型：Universal Render Pipeline/Lit
+
+    目標：
+    在西北區建立 3 個紅色立方體，排列成一列。
+
+    操作要求：
+    - 建立 3 個立方體
+    - 設定位置 X:-8~-2 / Z:6
+    - 套用紅色材質
+    - 完成後停止</pre>
+    <button onclick="copyPrompt('p02')">📋 複製 Prompt</button>
+    </div>
+
+    <!-- Prompt 03 -->
+    <div class="section">
+    <h3><span class="badge">03</span>GameObject 搜尋</h3>
+    <pre id="p03">【操作範圍聲明】
+    本次只示範物件搜尋，完成後請停止。
+
+    目標：
+    搜尋場景中的立方體並進行高亮。
+
+    操作要求：
+    - 搜尋名稱包含 "Cube" 的物件
+    - 將搜尋結果改為藍色
+    - 不修改其他物件
+    - 完成後停止</pre>
+    <button onclick="copyPrompt('p03')">📋 複製 Prompt</button>
+    </div>
+
+    <!-- Prompt 04 -->
+    <div class="section">
+    <h3><span class="badge">04</span>組件管理</h3>
+    <pre id="p04">【操作範圍聲明】
+    本次只示範組件新增，完成後請停止。
+
+    目標：
+    展示 Rigidbody 對物件行為的影響。
+
+    操作要求：
+    - 建立一顆藍色球體
+    - 新增 Rigidbody 組件
+    - 允許物理下落
+    - 完成後停止</pre>
+    <button onclick="copyPrompt('p04')">📋 複製 Prompt</button>
+    </div>
+
+    <!-- Prompt 05 -->
+    <div class="section">
+    <h3><span class="badge">05</span>資源搜尋</h3>
+    <pre id="p05">【操作範圍聲明】
+    本次只示範資源搜尋，完成後請停止。
+
+    目標：
+    顯示指定資源的搜尋結果數量。
+
+    操作要求：
+    - 搜尋可用材質資源
+    - 將數量顯示為文字
+    - 不進行其他操作
+    - 完成後停止</pre>
+    <button onclick="copyPrompt('p05')">📋 複製 Prompt</button>
+    </div>
+
+    <!-- Prompt 06 -->
+    <div class="section">
+    <h3><span class="badge">06</span>材質套用</h3>
+    <pre id="p06">【操作範圍聲明】
+    本次只示範材質套用，完成後請停止。
+
+    目標：
+    展示材質變化前後的差異。
+
+    操作要求：
+    - 建立一個膠囊體
+    - 套用黃色材質
+    - 放置於東北區
+    - 完成後停止</pre>
+    <button onclick="copyPrompt('p06')">📋 複製 Prompt</button>
+    </div>
+
+    <!-- Prompt 07 -->
+    <div class="section">
+    <h3><span class="badge">07</span>腳本建立</h3>
+    <pre id="p07">【操作範圍聲明】
+    本次只示範腳本建立與行為，完成後請停止。
+
+    目標：
+    展示腳本編譯後的動態效果。
+
+    操作要求：
+    - 建立旋轉腳本
+    - 掛載至立方體
+    - 物件持續旋轉
+    - 完成後停止</pre>
+    <button onclick="copyPrompt('p07')">📋 複製 Prompt</button>
+    </div>
+
+    <!-- Prompt 08 -->
+    <div class="section">
+    <h3><span class="badge">08</span>腳本移除</h3>
+    <pre id="p08">【操作範圍聲明】
+    本次只示範腳本移除，完成後請停止。
+
+    目標：
+    展示移除腳本後行為停止。
+
+    操作要求：
+    - 移除旋轉腳本
+    - 觀察旋轉停止
+    - 不進行其他修改
+    - 完成後停止</pre>
+    <button onclick="copyPrompt('p08')">📋 複製 Prompt</button>
+    </div>
+
+    <!-- Prompt 09 -->
+    <div class="section">
+    <h3><span class="badge">09</span>VFX 效果</h3>
+    <pre id="p09">【操作範圍聲明】
+    本次只示範 VFX 效果控制，完成後請停止。
+
+    目標：
+    展示粒子系統啟用與停用。
+
+    操作要求：
+    - 建立粒子系統
+    - 建立一個新的URP Shader 的材質
+    - 將此材質分配給 ParticleSystemRenderer
+    - 啟用顯示效果
+    - 停用隱藏效果
+    - 完成後停止</pre>
+    <button onclick="copyPrompt('p09')">📋 複製 Prompt</button>
+    </div>
+
+    <!-- Prompt 10 -->
+    <div class="section">
+    <h3><span class="badge">10</span>編輯器狀態</h3>
+    <pre id="p10">【操作範圍聲明】
+    本次只示範編輯器狀態顯示，完成後請停止。
+
+    目標：
+    顯示目前為 Edit Mode 或 Play Mode。
+
+    操作要求：
+    - 讀取編輯器狀態
+    - 中央文字顯示狀態
+    - 不執行其他行為
+    - 完成後停止</pre>
+    <button onclick="copyPrompt('p10')">📋 複製 Prompt</button>
+    </div>
+
+    <!-- Prompt 11 -->
+    <div class="section">
+    <h3><span class="badge">11</span>批量操作</h3>
+    <pre id="p11">【操作範圍聲明】
+    本次只示範批量建立，完成後請停止。
+
+    目標：
+    展示批量建立物件的效率。
+
+    操作要求：
+    - 批量建立 20 個立方體
+    - 規則排列於東南區
+    - 不進行後續修改
+    - 完成後停止</pre>
+    <button onclick="copyPrompt('p11')">📋 複製 Prompt</button>
+    </div>
+
+    <!-- Prompt 12 -->
+    <div class="section">
+    <h3><span class="badge">12</span>測試執行</h3>
+    <pre id="p12">【操作範圍聲明】
+    本次只示範測試執行狀態，完成後請停止。
+
+    目標：
+    顯示測試執行進度與結果。
+
+    操作要求：
+    - 執行測試
+    - 顯示進度與完成狀態
+    - 不進行其他操作
+    - 完成後停止</pre>
+    <button onclick="copyPrompt('p12')">📋 複製 Prompt</button>
+    </div>
+
+    <!-- Prompt 13 -->
+    <div class="section">
+    <h3><span class="badge">13</span>Console 監控</h3>
+    <pre id="p13">【操作範圍聲明】
+    本次只示範 Console 監控，完成後請停止。
+
+    目標：
+    將錯誤或警告訊息視覺化顯示。
+
+    操作要求：
+    - 讀取 Console 訊息
+    - 顯示錯誤等級與內容
+    - 不修正、不延伸
+    - 完成後停止</pre>
+    <button onclick="copyPrompt('p13')">📋 複製 Prompt</button>
+    </div>
+    
+    <!-- Prompt 14 -->
+    <div class="section">
+    <h3><span class="badge">14</span>Prefab 建立與保存</h3>
+    <pre id="p14">【操作範圍聲明】
+    本次只示範 Prefab 建立與保存，完成後請停止。
+
+    目標：
+    將現有 GameObject 轉換為 Prefab 並保存。
+
+    操作要求：
+    - 選擇場景中的一個立方體物件
+    - 建立 Prefab 資產
+    - 將 Prefab 儲存至 Assets/Prefabs
+    - 不進入 Prefab 編輯模式
+    - 完成後停止</pre>
+    <button onclick="copyPrompt('p14')">📋 複製 Prompt</button>
+    </div>
+
+    
+    <!-- Prompt 15 -->
+    <div class="section">
+    <h3><span class="badge">15</span>ScriptableObject 建立與修改</h3>
+    <pre id="p15">【操作範圍聲明】
+    本次只示範 ScriptableObject 建立與設定，完成後請停止。
+
+    目標：
+    建立一個 ScriptableObject 並修改其參數。
+
+    操作要求：
+    - 建立新的 ScriptableObject 資產
+    - 設定至少一個公開參數值
+    - 不關聯到場景物件
+    - 完成後停止
+
+    </pre>
+    <button onclick="copyPrompt('p15')">📋 複製 Prompt</button>
+    </div>
+
+    
+    <!-- Prompt 16 -->
+    <div class="section">
+    <h3><span class="badge">16</span>資源重新整理與編輯器狀態</h3>
+    <pre id="p16">【操作範圍聲明】
+    本次只示範資源重新整理與狀態讀取，完成後請停止。
+
+    目標：
+    確認資源重新整理後的編輯器狀態。
+
+    操作要求：
+    - 執行 Unity 資源重新整理
+    - 讀取目前編輯器狀態
+    - 將狀態以文字顯示
+    - 不執行其他修改
+    - 完成後停止</pre>
+    <button onclick="copyPrompt('p16')">📋 複製 Prompt</button>
+    </div>
+
+    </main>
+
+    <script>
+        const docMap = {
+            p01: "doc-scene",
+            p02: "doc-gameobject",
+            p03: "doc-gameobject",
+            p04: "doc-component",
+            p05: "doc-asset",
+            p06: "doc-asset",
+            p07: "doc-script",
+            p08: "doc-script",
+            p09: "doc-vfx",
+            p10: "doc-editor",
+            p11: "doc-batch",
+            p12: "doc-test",
+            p13: "doc-monitor",
+            p14: "doc-prefab",
+            p15: "doc-scriptable",
+            p16: "doc-refresh"
+        };
+
+        function copyPrompt(id){
+            const text = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(text);
+
+            document.querySelectorAll(".doc-section")
+                .forEach(el => el.classList.remove("active"));
+
+            if(docMap[id]){
+                const target = document.getElementById(docMap[id]);
+                if(target){
+                target.classList.add("active");
+                target.scrollIntoView({behavior:"smooth", block:"nearest"});
+                }
+            }
+        }
+    </script>
+</body>
+</html>

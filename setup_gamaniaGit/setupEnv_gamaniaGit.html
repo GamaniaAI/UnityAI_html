@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>Unity MCP 快速開發環境配置</title>
+    <style>
+        :root {
+        --primary-color: #0078d4;
+        --success-color: #107c10;
+        --bg-color: #f3f2f1;
+        --card-bg: #ffffff;
+        --text-color: #323130;
+        --code-bg: #1e1e1e;
+        }
+        body {
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+        margin: 0;
+        }
+        .container {
+        max-width: 850px;
+        width: 100%;
+        background: var(--card-bg);
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        h1 { 
+        color: var(--primary-color); 
+        border-bottom: 2px solid #eee; 
+        padding-bottom: 10px; 
+        }
+        h2 { 
+        color: var(--primary-color); 
+        margin-top: 40px; 
+        font-size: 20px; 
+        display: flex; 
+        align-items: center; 
+        }
+        h2::before { 
+        content: "🚀"; 
+        margin-right: 10px; 
+        }
+        .section {
+        margin-bottom: 30px;
+        padding: 20px;
+        background: #fafafa;
+        border-radius: 8px;
+        border: 1px solid #eaeaea;
+        }
+        .method-area {
+        display: flex;
+        justify-content: space-between;
+        }
+        .method-container {
+        width:49%;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .method-header {
+        background: linear-gradient(135deg, var(--primary-color), #0062ad);
+        color: white;
+        padding: 15px 20px;
+        }
+        .method-header h3 {
+        margin: 0;
+        font-size: 18px;
+        color: white;
+        }
+        .method-content {
+        padding: 20px;
+        }
+        .method-content ol {
+        margin: 10px 0 20px 0;
+        padding-left: 20px;
+        }
+        .method-content ol li {
+        margin: 8px 0;
+        line-height: 1.6;
+        }
+        .method-bat .method-header {
+        background: linear-gradient(135deg, var(--success-color), #0a5a0a);
+        }
+        .divider {
+        text-align: center;
+        margin: 30px 0;
+        position: relative;
+        font-size: 16px;
+        font-weight: bold;
+        color: #999;
+        }
+        .divider::before,
+        .divider::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 40%;
+        height: 1px;
+        background: #ddd;
+        }
+        .divider::before {
+        left: 0;
+        }
+        .divider::after {
+        right: 0;
+        }
+        .script-preview {
+        margin-top: 15px;
+        }
+        .script-preview summary {
+        cursor: pointer;
+        padding: 10px;
+        background: #f5f5f5;
+        border-radius: 4px;
+        user-select: none;
+        font-weight: 600;
+        color: #555;
+        }
+        .script-preview summary:hover {
+        background: #e8e8e8;
+        }
+        .script-preview .code-container {
+        margin-top: 10px;
+        }
+        .step-box {
+        background: #f0f7ff;
+        border-left: 5px solid var(--primary-color);
+        padding: 15px 20px;
+        margin: 15px 0;
+        line-height: 1.6;
+        }
+        .code-container {
+        position: relative;
+        background-color: var(--code-bg);
+        border-radius: 8px;
+        border: 1px solid #444;
+        }
+        pre {
+        white-space: pre-wrap;
+        color: #dcdcdc;
+        padding: 20px;
+        overflow-x: auto;
+        font-family: 'Cascadia Code', 'Consolas', monospace;
+        font-size: 13px;
+        margin: 0;
+        max-height: 250px;
+        }
+        .unity-step {
+        margin-bottom: 20px;
+        padding-left: 10px;
+        }
+        .unity-step h3 { 
+        font-size: 16px; 
+        margin-bottom: 8px; 
+        color: #444; 
+        }
+        .git-url-box {
+        background: #fff;
+        border: 1px dashed var(--primary-color);
+        padding: 10px;
+        font-family: monospace;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 10px 0;
+        }
+        .btn {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: 0.2s;
+        }
+        .btn:hover { 
+        background-color: #005a9e; 
+        }
+        .btn-sm { 
+        padding: 5px 10px; 
+        font-size: 12px; 
+        }
+        .copy-main-btn {
+        width: 100%;
+        padding: 15px;
+        font-size: 18px;
+        margin: 10px 0;
+        }
+        .btn-download {
+        background-color: var(--success-color);
+        width: 100%;
+        padding: 15px;
+        font-size: 16px;
+        margin: 10px 0;
+        }
+        .btn-download:hover {
+        background-color: #0e6b0e;
+        }
+        .warning-box {
+        background: #fff4e5;
+        border-left: 5px solid #ff8c00;
+        padding: 15px 20px;
+        margin: 15px 0;
+        line-height: 1.6;
+        }
+        .warning-box strong {
+        color: #ff8c00;
+        }
+        .warning-box ul {
+        margin: 10px 0 0 0;
+        padding-left: 20px;
+        }
+        .warning-box li {
+        margin: 5px 0;
+        }
+        kbd {
+        background: #fff;
+        border: 1px solid #adb5bd;
+        border-radius: 3px;
+        padding: 1px 5px;
+        font-size: 0.9em;
+        }
+        .status-dot { 
+        color: var(--success-color); 
+        font-weight: bold; 
+        }
+    </style>
+</head>
+<body>
+    
+<div class="container">
+    <h1>Unity MCP 快速開發環境配置</h1>
+
+    <!-- 第一部分：環境腳本 -->
+    <div class="section">
+        <h2>第一步：配置本機 Python 與 uv 環境</h2>
+        <p>請選擇以下其中一種方式執行，確保系統具備 <strong>uv</strong> 與 <strong>Python 3.10+</strong>。</p>
+        <div class="method-area">
+          <!-- 方式一：.bat 檔 -->
+          <div class="method-container method-bat">
+              <div class="method-header">
+                  <h3>🎯 方式一：一鍵安裝</h3>
+              </div>
+              <div class="method-content">
+                  <p><strong>步驟：</strong></p>
+                  <ol>
+                      <li>點擊下方按鈕下載 .bat 檔</li>
+                      <li>雙擊執行下載的檔案</li>
+                      <li>等待安裝完成（會自動安裝 Python 3.12.2）</li>
+                  </ol>
+                  <button class="btn btn-download" onclick="downloadBat()">
+                      ⬇️ 下載 setup_uv_python.bat
+                  </button>
+                  <div class="warning-box">
+                      <strong>⚠️ 注意事項：</strong>
+                      <ul>
+                          <li>會自動安裝 Python 3.12.2（不會詢問確認）</li>
+                          <li>需要網路連線下載相關套件</li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+
+          <!-- 方式二：PowerShell -->
+          <div class="method-container method-powershell">
+              <div class="method-header">
+                  <h3>⚙️ 方式二：手動執行 PowerShell 腳本</h3>
+              </div>
+              <div class="method-content">
+                  <p><strong>步驟：</strong></p>
+                  <ol>
+                      <li>點擊下方按鈕複製腳本內容</li>
+                      <li>開啟 <kbd>PowerShell</kbd></li>
+                      <li>點擊右鍵貼上並執行</li>
+                  </ol>
+                  <button class="btn copy-main-btn" onclick="copyScript('scriptContent')">
+                      📋 複製 PowerShell 腳本
+                  </button>
+                  <details class="script-preview">
+                      <summary>▶ 點此展開查看腳本內容</summary>
+                      <div class="code-container">
+                        <pre id="scriptContent">Set-ExecutionPolicy Bypass -Scope Process -Force
+
+$ProgressPreference = 'SilentlyContinue'
+
+Write-Host "安裝 uv..." -ForegroundColor Cyan
+Invoke-WebRequest https://astral.sh/uv/install.ps1 | Invoke-Expression
+
+$env:Path =
+    [Environment]::GetEnvironmentVariable("Path","User") + ";" +
+    [Environment]::GetEnvironmentVariable("Path","Machine")
+
+Write-Host "檢查是否已存在 Python 3.10 以上版本..." -ForegroundColor Cyan
+
+$hasPython = $false
+try {
+    if (uv python find ">=3.10" 2>$null) {
+        $hasPython = $true
+    }
+} catch {}
+
+if ($hasPython) {
+    Write-Host "已偵測到符合需求的 Python，略過安裝。" -ForegroundColor Green
+} else {
+    Write-Host "未偵測到 Python 3.10 以上版本，安裝 Python 3.12.2..." -ForegroundColor Yellow
+    uv python install 3.12.2
+}
+
+Write-Host "完成。" -ForegroundColor Green
+</pre>
+                      </div>
+                  </details>
+              </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- 第二部分：Unity MCP 安裝 -->
+    <div class="section">
+        <h2>第二步：安裝 Unity MCP 套件</h2>
+        
+        <div class="unity-step">
+            <h3>#1 透過 Git URL 安裝</h3>
+            <p>在 Unity 點選：<kbd>Window</kbd> > <kbd>Package Manager</kbd> > <kbd>+</kbd> > <kbd>Add package from git URL...</kbd></p>
+            <div class="git-url-box">
+                <span id="gitUrl">https://github.com/GamaniaAI/UnityAI.git?path=/MCPForUnity</span>
+                <button class="btn btn-sm" onclick="copyText('gitUrl')">複製連結</button>
+            </div>
+        </div>
+
+        <div class="unity-step">
+            <h3>#2 確認 Setup 狀態</h3>
+            <p><kbd>Window</kbd> > <kbd>MCP For Unity</kbd> > <kbd>Local Setup Window</kbd></p>
+            <p>確認 <strong>Python</strong> 與 <strong>UV</strong> 是否皆已正確偵測到。</p>
+        </div>
+    </div>
+
+    <!-- 第三部分：伺服器啟動 -->
+    <div class="section">
+        <h2>第三步：啟動與配置 MCP</h2>
+        
+        <div class="unity-step">
+            <h3>#3 啟動本機 HTTP 伺服器</h3>
+            <ul>
+                <li><kbd>Window</kbd> > <kbd>MCP For Unity</kbd> > <kbd>Togle MCP Window</kbd></li>
+                <li><strong>Connection</strong> Transport 選擇 <code>HTTPLocal</code></li>
+                <li>點擊 <kbd>Start Server</kbd> (使用期間請勿關閉開啟的終端機)</li>
+                <li><em>註：結束使用時，於同一位置點擊 <kbd>Stop Server</kbd> 即可關閉。</em></li>
+            </ul>
+        </div>
+
+        <div class="unity-step">
+            <h3>#4 MCP Client 配置 (以 Cursor 為例)</h3>
+            <ul>
+                <li>在同個視窗的 <strong>Client Configuration</strong> 選擇您的工具 (例如 <code>Cursor</code>)</li>
+                <li>點擊右下角 <kbd>Configure</kbd></li>
+                <li>成功後將顯示 <span class="status-dot">🟢 Configured</span></li>
+            </ul>
+        </div>
+
+        <div class="unity-step" style="background: #e7f3e7; padding: 10px; border-radius: 4px;">
+            <h3>#5 完成！</h3>
+            <p>您現在可以在 IDE (Cursor/VSCode) 中讓 AI Agent 使用 Unity MCP 指令操作您的專案了。</p>
+        </div>
+    </div>
+
+    <script>
+        function copyScript(id) {
+            const element = document.getElementById(id);
+            if (!element) {
+                alert('找不到腳本內容');
+                return;
+            }
+            
+            // 使用 textContent 而非 innerText，即使元素隱藏也能取得內容
+            const text = element.textContent.trim();
+            
+            navigator.clipboard.writeText(text).then(() => {
+                alert('腳本已複製！請前往 PowerShell 貼上執行。');
+            }).catch(err => {
+                alert('複製失敗,請手動複製腳本內容。');
+                console.error('Copy failed:', err);
+            });
+        }
+
+        function copyText(id) {
+        const text = document.getElementById(id).innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            alert('連結已複製！');
+        });
+        }
+
+        function downloadBat() {
+            const batContent = `@echo off
+echo Starting Unity MCP Environment Setup...
+echo.
+
+powershell -NoProfile -ExecutionPolicy Bypass -Command "Write-Host 'Installing uv...' -ForegroundColor Cyan; Invoke-WebRequest https://astral.sh/uv/install.ps1 | Invoke-Expression; $env:Path=[Environment]::GetEnvironmentVariable('Path','User')+';'+[Environment]::GetEnvironmentVariable('Path','Machine'); Write-Host 'Checking Python...' -ForegroundColor Cyan; $hasPython=$false; try { if (uv python find '>=3.10' 2>$null) { $hasPython=$true } } catch {}; if ($hasPython) { Write-Host 'Python 3.10+ already installed' -ForegroundColor Green } else { Write-Host 'Installing Python 3.12.2...' -ForegroundColor Yellow; uv python install 3.12.2; Write-Host 'Python installed' -ForegroundColor Green }; Write-Host 'Setup completed!' -ForegroundColor Green"
+
+echo.
+pause`;
+
+            const blob = new Blob([batContent], { type: 'text/plain;charset=utf-8' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'setup_uv_python.bat';
+            
+            document.body.appendChild(a);
+            a.click();
+            
+            setTimeout(() => {
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            }, 100);
+            
+            alert('setup_uv_python.bat 已下載！');
+        }
+    </script>
+</body>
+</html>
